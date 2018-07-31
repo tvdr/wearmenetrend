@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.vonat_row.view.*
+import Json4Kotlin_Base
+import android.graphics.Color
 
-class MainAdapter: RecyclerView.Adapter<CustomViewHolder>(){
+class MainAdapter(val listdata: Json4Kotlin_Base): RecyclerView.Adapter<CustomViewHolder>(){
 
 
     override fun getItemCount(): Int {
-       return 3
+       return listdata.timetable.count()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -20,8 +22,27 @@ class MainAdapter: RecyclerView.Adapter<CustomViewHolder>(){
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        holder?.view?.from_allomas?.text = "Budapest";
-        holder?.view?.to_allomas?.text = "Solymár";
+        holder?.view?.starttime?.text = listdata.timetable[position].details[0].dep
+        holder?.view?.destinationtime?.text = listdata.timetable[position].details[1].dep
+
+        holder?.view?.startreal?.text = listdata.timetable[position].details[0].dep_real
+        holder?.view?.depreal?.text = listdata.timetable[position].details[1].dep_real
+
+        holder?.view?.routetext.text = listdata.route
+
+
+
+        if (listdata.timetable[position].details[0].dep != listdata.timetable[position].details[0].dep_real){
+            holder?.view?.startreal?.setTextColor(Color.parseColor("#FF0000"))
+        }else{
+            holder?.view?.startreal?.setTextColor(Color.parseColor("#FFFFFF"))
+        }
+
+        if (listdata.timetable[position].details[1].dep != listdata.timetable[position].details[1].dep_real){
+            holder?.view?.depreal?.setTextColor(Color.parseColor("#FF0000"))
+        }else{
+            holder?.view?.depreal?.setTextColor(Color.parseColor("#FFFFFF"))
+        }
     }
 
 }
