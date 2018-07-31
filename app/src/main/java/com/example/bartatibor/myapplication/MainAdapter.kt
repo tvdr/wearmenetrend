@@ -28,7 +28,7 @@ class MainAdapter(val listdata: Json4Kotlin_Base): RecyclerView.Adapter<CustomVi
         holder?.view?.startreal?.text = listdata.timetable[position].details[0].dep_real
         holder?.view?.depreal?.text = listdata.timetable[position].details[1].dep_real
 
-        holder?.view?.routetext.text = listdata.route
+        holder?.view?.routetext.text = listdata.route + ' ' + listdata.date
 
 
 

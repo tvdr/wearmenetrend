@@ -8,11 +8,17 @@ import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
 import Json4Kotlin_Base
+import android.view.View
+import android.widget.Button
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import android.widget.ImageButton
+
+
 
 class MainActivity : WearableActivity() {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,18 +29,23 @@ class MainActivity : WearableActivity() {
 
         recyclerview_main.layoutManager = LinearLayoutManager(this)
 
+        fetchJSON(recyclerview_main)
 
 
-        fetchJSON()
+        val refreshbutton = findViewById(R.id.refreshbtn) as Button
+
+        refreshbutton.setOnClickListener(View.OnClickListener {
+            fetchJSON(recyclerview_main)
+        })
 
     }
 
 
-    fun fetchJSON(){
+     fun fetchJSON(view:View){
+
+        recyclerview_main.visibility = View.INVISIBLE
 
         val today = SimpleDateFormat("yyyy.MM.dd").format(Date())
-
-
         val url = "http://apiv2.oroszi.net/elvira?from=solymar&to=nyugati&date=$today"
         val client = OkHttpClient()
 
@@ -55,6 +66,7 @@ class MainActivity : WearableActivity() {
 
 
                 runOnUiThread {
+                    recyclerview_main.visibility = View.VISIBLE
                     recyclerview_main.adapter = MainAdapter(listdata)
                 }
 
@@ -66,8 +78,3 @@ class MainActivity : WearableActivity() {
 
 
 }
-
-
-class HomeFeed(val videos:List<Video>)
-
-class Video(val id: Int, val name:String)
