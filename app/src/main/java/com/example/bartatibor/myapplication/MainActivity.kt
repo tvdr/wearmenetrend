@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
 import Json4Kotlin_Base
+import android.content.Intent
 import android.support.wear.widget.drawer.WearableActionDrawerView
 import android.view.MenuItem
 import android.view.View
@@ -20,21 +21,10 @@ import android.widget.ImageButton
 
 
 class MainActivity : WearableActivity(), MenuItem.OnMenuItemClickListener {
-    override fun onMenuItemClick(menuItem: MenuItem): Boolean {
-        val itemId = menuItem.itemId
 
-        when (itemId){
-            R.id.menu_refresh -> {
-                fetchJSON(View(this))
-                val mWearableActionDrawer = findViewById(R.id.bottom_action_drawer) as WearableActionDrawerView
-                mWearableActionDrawer.getController().closeDrawer()
 
-            }
-            R.id.menu_settings -> println("menu_settings")
-        }
-
-        return true
-    }
+    var induloAllomas : String =  "Solymár"
+    var celAllomas : String = "Nyugati"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,12 +42,46 @@ class MainActivity : WearableActivity(), MenuItem.OnMenuItemClickListener {
 
 
 
-        fetchJSON(recyclerview_main)
+
+        val settingsIndulo = intent.getStringExtra("indulo_allomas")
+        val settingsCel = intent.getStringExtra("cel_allomas")
+
+        if(settingsIndulo != "" && settingsIndulo != null) {
+            induloAllomas = settingsIndulo
+        }
+
+        if (settingsCel != "" && settingsCel != null) {
+            celAllomas = settingsCel
+        }
+
+        fetchJSON(recyclerview_main,induloAllomas,celAllomas)
 
     }
 
 
-     fun fetchJSON(view:View){
+    override fun onMenuItemClick(menuItem: MenuItem): Boolean {
+        val itemId = menuItem.itemId
+
+        when (itemId){
+            R.id.menu_refresh -> {
+                fetchJSON(View(this))
+                val mWearableActionDrawer = findViewById(R.id.bottom_action_drawer) as WearableActionDrawerView
+                mWearableActionDrawer.getController().closeDrawer()
+
+            }
+            R.id.menu_settings -> {
+                val intent = Intent(this,SettingsActivity::class.java).apply{
+                    putExtra("indulo_allomas",induloAllomas)
+                    putExtra("cel_allomas",celAllomas)
+                }
+                startActivity(intent)
+            }
+        }
+
+        return true
+    }
+
+     fun fetchJSON(view:View, induloAllomas :String = this.induloAllomas,celAllomas:String = this.celAllomas){
 
          println("FETCHJSON")
 
@@ -66,10 +90,11 @@ class MainActivity : WearableActivity(), MenuItem.OnMenuItemClickListener {
          progressBar.visibility = View.VISIBLE
 
 
-
-
         val today = SimpleDateFormat("yyyy.MM.dd").format(Date())
-        val url = "http://apiv2.oroszi.net/elvira?from=solymar&to=nyugati&date=$today"
+        val url = "http://apiv2.oroszi.net/elvira?from=$induloAllomas&to=$celAllomas&date=$today"
+
+         println(url)
+
         val client = OkHttpClient()
 
         val request = Request.Builder().url(url).build()
