@@ -8,6 +8,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
 import Json4Kotlin_Base
+import android.support.wear.widget.drawer.WearableActionDrawerView
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import java.text.DateFormat
@@ -17,7 +19,22 @@ import android.widget.ImageButton
 
 
 
-class MainActivity : WearableActivity() {
+class MainActivity : WearableActivity(), MenuItem.OnMenuItemClickListener {
+    override fun onMenuItemClick(menuItem: MenuItem): Boolean {
+        val itemId = menuItem.itemId
+
+        when (itemId){
+            R.id.menu_refresh -> {
+                fetchJSON(View(this))
+                val mWearableActionDrawer = findViewById(R.id.bottom_action_drawer) as WearableActionDrawerView
+                mWearableActionDrawer.getController().closeDrawer()
+
+            }
+            R.id.menu_settings -> println("menu_settings")
+        }
+
+        return true
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,16 +49,23 @@ class MainActivity : WearableActivity() {
         fetchJSON(recyclerview_main)
 
 
-        val refreshbutton = findViewById(R.id.refreshbtn) as Button
+        /*val refreshbutton = findViewById(R.id.refreshbtn) as Button
 
         refreshbutton.setOnClickListener(View.OnClickListener {
             fetchJSON(recyclerview_main)
-        })
+        })*/
+
+        val mWearableActionDrawer = findViewById(R.id.bottom_action_drawer) as WearableActionDrawerView
+        // Peeks action drawer on the bottom.
+        mWearableActionDrawer.getController().peekDrawer()
+        mWearableActionDrawer.setOnMenuItemClickListener(this)
 
     }
 
 
      fun fetchJSON(view:View){
+
+         println("FETCHJSON")
 
         recyclerview_main.visibility = View.INVISIBLE
 

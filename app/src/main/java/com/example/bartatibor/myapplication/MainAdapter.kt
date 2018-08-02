@@ -30,7 +30,7 @@ class MainAdapter(val listdata: Json4Kotlin_Base): RecyclerView.Adapter<CustomVi
 
         holder?.view?.routetext.text = listdata.route + ' ' + listdata.date
 
-
+        println(listdata.timetable[position]);
 
         if (listdata.timetable[position].details[0].dep != listdata.timetable[position].details[0].dep_real){
             holder?.view?.startreal?.setTextColor(Color.parseColor("#FF0000"))
