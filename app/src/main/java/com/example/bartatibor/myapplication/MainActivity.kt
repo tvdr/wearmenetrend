@@ -46,19 +46,13 @@ class MainActivity : WearableActivity(), MenuItem.OnMenuItemClickListener {
 
         recyclerview_main.layoutManager = LinearLayoutManager(this)
 
-        fetchJSON(recyclerview_main)
-
-
-        /*val refreshbutton = findViewById(R.id.refreshbtn) as Button
-
-        refreshbutton.setOnClickListener(View.OnClickListener {
-            fetchJSON(recyclerview_main)
-        })*/
-
         val mWearableActionDrawer = findViewById(R.id.bottom_action_drawer) as WearableActionDrawerView
-        // Peeks action drawer on the bottom.
         mWearableActionDrawer.getController().peekDrawer()
         mWearableActionDrawer.setOnMenuItemClickListener(this)
+
+
+
+        fetchJSON(recyclerview_main)
 
     }
 
@@ -67,7 +61,12 @@ class MainActivity : WearableActivity(), MenuItem.OnMenuItemClickListener {
 
          println("FETCHJSON")
 
-        recyclerview_main.visibility = View.INVISIBLE
+
+         recyclerview_main.visibility = View.GONE
+         progressBar.visibility = View.VISIBLE
+
+
+
 
         val today = SimpleDateFormat("yyyy.MM.dd").format(Date())
         val url = "http://apiv2.oroszi.net/elvira?from=solymar&to=nyugati&date=$today"
@@ -92,6 +91,7 @@ class MainActivity : WearableActivity(), MenuItem.OnMenuItemClickListener {
                 runOnUiThread {
                     recyclerview_main.visibility = View.VISIBLE
                     recyclerview_main.adapter = MainAdapter(listdata)
+                    progressBar.visibility = View.INVISIBLE
                 }
 
             }
