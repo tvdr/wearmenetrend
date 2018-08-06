@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/blue"
     android:layout_marginBottom="4dp"
-    android:padding="3dp"
-    >
+    android:background="@color/blue"
+    android:padding="3dp">
 
     <TextView
         android:id="@+id/starttime"
@@ -17,7 +16,7 @@
         android:layout_marginTop="8dp"
         android:text="starttime"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/routetext" />
+        app:layout_constraintTop_toBottomOf="@+id/fromtext" />
 
     <TextView
         android:id="@+id/destinationtime"
@@ -27,7 +26,7 @@
         android:layout_marginTop="8dp"
         android:text="desttime"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/routetext" />
+        app:layout_constraintTop_toBottomOf="@+id/totext" />
 
     <TextView
         android:id="@+id/startreal"
@@ -46,19 +45,54 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:gravity="right"
         android:text="depreal"
-        android:textAlignment="gravity"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/destinationtime" />
+        app:layout_constraintTop_toBottomOf="@+id/destinationtime"
+        android:gravity="right"/>
 
     <TextView
-        android:id="@+id/routetext"
+        android:id="@+id/fromtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="fromtext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/datetext" />
+
+    <TextView
+        android:id="@+id/totext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="totext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/datetext" />
+
+    <TextView
+        android:id="@+id/datetext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="routetext"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="163dp" />
+        android:text="datetext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/moreinfobtn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/ic_info_outline_black_18dp"
+        android:background="@color/light_grey"
+        android:padding="0dp"/>
+
 </android.support.constraint.ConstraintLayout>

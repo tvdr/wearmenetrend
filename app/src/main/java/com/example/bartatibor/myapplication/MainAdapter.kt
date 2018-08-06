@@ -22,26 +22,28 @@ class MainAdapter(val listdata: Json4Kotlin_Base): RecyclerView.Adapter<CustomVi
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        holder?.view?.starttime?.text = listdata.timetable[position].details[0].dep
-        holder?.view?.destinationtime?.text = listdata.timetable[position].details[1].dep
+        holder.view.starttime?.text = listdata.timetable[position].details[0].dep
+        holder.view.destinationtime?.text = listdata.timetable[position].details[1].dep
 
-        holder?.view?.startreal?.text = listdata.timetable[position].details[0].dep_real
-        holder?.view?.depreal?.text = listdata.timetable[position].details[1].dep_real
+        holder.view.startreal?.text = listdata.timetable[position].details[0].dep_real
+        holder.view.depreal?.text = listdata.timetable[position].details[1].dep_real
 
-        holder?.view?.routetext.text = listdata.route + ' ' + listdata.date
+        holder.view.fromtext.text = listdata.timetable[position].details[0].from
+        holder.view.totext.text = listdata.timetable[position].details[1].from
+        holder.view.datetext.text = listdata.date
 
-        println(listdata.timetable[position]);
+
 
         if (listdata.timetable[position].details[0].dep != listdata.timetable[position].details[0].dep_real){
-            holder?.view?.startreal?.setTextColor(Color.parseColor("#FF0000"))
+            holder.view.startreal?.setTextColor(Color.parseColor("#FF0000"))
         }else{
-            holder?.view?.startreal?.setTextColor(Color.parseColor("#FFFFFF"))
+            holder.view.startreal?.setTextColor(Color.parseColor("#FFFFFF"))
         }
 
         if (listdata.timetable[position].details[1].dep != listdata.timetable[position].details[1].dep_real){
-            holder?.view?.depreal?.setTextColor(Color.parseColor("#FF0000"))
+            holder.view.depreal?.setTextColor(Color.parseColor("#FF0000"))
         }else{
-            holder?.view?.depreal?.setTextColor(Color.parseColor("#FFFFFF"))
+            holder.view.depreal?.setTextColor(Color.parseColor("#FFFFFF"))
         }
     }
 

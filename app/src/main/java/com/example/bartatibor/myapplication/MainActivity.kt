@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
 import Json4Kotlin_Base
+import android.content.Context
 import android.content.Intent
 import android.support.wear.widget.drawer.WearableActionDrawerView
 import android.view.MenuItem
@@ -17,14 +18,14 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import android.widget.ImageButton
-
+import java.io.File
 
 
 class MainActivity : WearableActivity(), MenuItem.OnMenuItemClickListener {
 
 
-    var induloAllomas : String =  "Solymár"
-    var celAllomas : String = "Nyugati"
+    var induloAllomas : String =  ""
+    var celAllomas : String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,23 +42,37 @@ class MainActivity : WearableActivity(), MenuItem.OnMenuItemClickListener {
         mWearableActionDrawer.setOnMenuItemClickListener(this)
 
 
+        var settingsIndulo = ""
+        if (File(applicationContext.filesDir, "settings_indulo").exists()){
+            settingsIndulo = File(applicationContext.filesDir, "settings_indulo").bufferedReader().use { it.readText().trim(); }
+        }
 
 
-        val settingsIndulo = intent.getStringExtra("indulo_allomas")
-        val settingsCel = intent.getStringExtra("cel_allomas")
+        var settingsCel = ""
+        if (File(applicationContext.filesDir,"settings_cel").exists()){
+            settingsCel = File(applicationContext.filesDir, "settings_cel").bufferedReader().use { it.readText().trim(); }
+        }
 
-        if(settingsIndulo != "" && settingsIndulo != null) {
+
+        if(settingsIndulo != "" && settingsCel != "") {
+
+            println("VANSETTINGS")
+
             induloAllomas = settingsIndulo
-        }
-
-        if (settingsCel != "" && settingsCel != null) {
             celAllomas = settingsCel
+            fetchJSON(recyclerview_main,induloAllomas,celAllomas)
+        }else{
+            println("NINCSSETTINGS")
+            val intent = Intent(this,SettingsActivity::class.java).apply {  }
+            startActivity(intent)
+
         }
 
-        fetchJSON(recyclerview_main,induloAllomas,celAllomas)
+
+
+
 
     }
-
 
     override fun onMenuItemClick(menuItem: MenuItem): Boolean {
         val itemId = menuItem.itemId
@@ -71,8 +86,8 @@ class MainActivity : WearableActivity(), MenuItem.OnMenuItemClickListener {
             }
             R.id.menu_settings -> {
                 val intent = Intent(this,SettingsActivity::class.java).apply{
-                    putExtra("indulo_allomas",induloAllomas)
-                    putExtra("cel_allomas",celAllomas)
+                    //putExtra("indulo_allomas",induloAllomas)
+                    //putExtra("cel_allomas",celAllomas)
                 }
                 startActivity(intent)
             }
@@ -81,7 +96,7 @@ class MainActivity : WearableActivity(), MenuItem.OnMenuItemClickListener {
         return true
     }
 
-     fun fetchJSON(view:View, induloAllomas :String = this.induloAllomas,celAllomas:String = this.celAllomas){
+    fun fetchJSON(view:View, induloAllomas :String = this.induloAllomas,celAllomas:String = this.celAllomas){
 
          println("FETCHJSON")
 
